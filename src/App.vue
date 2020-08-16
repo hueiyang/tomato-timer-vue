@@ -1,60 +1,101 @@
 <template>
   <v-app>
+    <div>
     <v-app-bar
-      app
-      color="primary"
-      dark
+            app
+            color="primary"
+            dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-toolbar-title>Tomato Timer</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+              color="pink"
+              dark
+              fab
+              small
+              @click="openDialog"
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <v-container>
+        <div>
+          <v-expansion-panels
+            v-model="panel"
+            hover
+            multiple
+          >
+            <v-expansion-panel
+              v-for="(tomato, index) in tomatos"
+              :key="index"
+            >
+              <v-expansion-panel-header>{{ tomato.title }}</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <tomato-timer
+                        :tomato="tomato"
+                ></tomato-timer>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+
+          </v-expansion-panels>
+        </div>
+      </v-container>
     </v-main>
+
+    <v-footer
+            absolute
+            class="font-weight-medium"
+    >
+      <v-col
+              class="text-center"
+              cols="12"
+      >
+        {{ new Date().getFullYear() }} — <strong>Tomato Timer</strong>
+      </v-col>
+    </v-footer>
+    </div>
+
+    <new-tomato-dialog
+            ref="dialog"
+            @commitTomato="addNewTomato"
+    ></new-tomato-dialog>
+
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
 
+import TomatoTimer from "./components/TomatoTimer";
+import NewTomatoDialog from "./components/NewTomatoDialog";
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    NewTomatoDialog,
+    TomatoTimer
   },
 
   data: () => ({
-    //
+    panel: [],
+    dialogOpen: false,
+    tomatos: [
+      { title: '事情的主題', content: '這是你對這件事的描述', clock: 25, closed: false }
+    ]
   }),
+  methods: {
+    openDialog () {
+      console.log('add one')
+      this.dialogOpen = true
+      this.$refs.dialog.openDialog()
+    },
+    addNewTomato (tomato) {
+      console.log('create new one = ', tomato)
+      this.tomatos.push(tomato)
+    }
+  }
 };
 </script>

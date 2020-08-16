@@ -36,10 +36,17 @@ export default {
     name: "NewTomatoDialog",
     data: () => ({
         open: false,
+        defaultTomato: {
+            title: '',
+            content: '',
+            clock: 25,
+            closed: false
+        },
         tomato: {
             title: '',
             content: '',
-            clock: 25
+            clock: 25,
+            closed: false
         }
     }),
     methods: {
@@ -49,11 +56,11 @@ export default {
         createNewTomato () {
             console.log(this.tomato)
             this.$emit('commitTomato', this.tomato)
-            this.tomato = {}
+            this.tomato = Object.assign({}, this.defaultTomato)
             this.open = false
         },
         closeDialog () {
-            this.tomato = {}
+            this.tomato = Object.assign({}, this.defaultTomato)
             this.open = false
         }
     }

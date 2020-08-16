@@ -5,7 +5,7 @@
         </v-card-title>
 
         <v-card-subtitle>
-            {{ tomato.clock }}
+            {{ tomato.clock }} 分鐘
         </v-card-subtitle>
 
         <v-card-text>

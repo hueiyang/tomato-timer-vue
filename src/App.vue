@@ -1,63 +1,85 @@
 <template>
   <v-app>
-    <div>
     <v-app-bar
-            app
-            color="primary"
-            dark
+      app
+      color="primary"
+      dark
     >
-      <v-toolbar-title>Tomato Timer</v-toolbar-title>
+      <v-row>
+        <v-col>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-              color="pink"
-              dark
-              fab
-              small
-              @click="openDialog"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
+        </v-col>
+        <v-col class="d-flex justify-center">
+          <v-toolbar-title>Tomato Timer</v-toolbar-title>
+        </v-col>
+        <v-col class="d-flex justify-end">
+          <v-btn
+            color="pink"
+            dark
+            fab
+            small
+            @click="openDialog"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-app-bar>
 
-    <v-main>
+    <v-main class="align-center">
       <v-container>
-        <div>
-          <v-expansion-panels
-            v-model="panel"
-            hover
-            multiple
-          >
-            <v-expansion-panel
-              v-for="(tomato, index) in tomatos"
-              :key="index"
-            >
-              <v-expansion-panel-header>{{ tomato.title }}</v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <tomato-timer
-                        :tomato="tomato"
-                ></tomato-timer>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-
-          </v-expansion-panels>
-        </div>
+        <v-sheet>
+          <v-row>
+            <v-col cols="12">
+              <v-tabs
+                      centered
+                      center-active
+                      v-model="currentTab"
+              >
+                <v-tab
+                        v-for="tab in tabs"
+                        :key="tab.value"
+                >
+                  {{ tab.text }}
+                </v-tab>
+                <v-tabs-items
+                        v-model="currentTab"
+                >
+                  <v-tab-item
+                          v-for="tab in tabs"
+                          :key="tab.value"
+                  >
+                    <v-row class="justify-center">
+                      <v-col cols="12" sm="6">
+                          <TomatoTimer
+                                  :tab-name="tab.text"
+                                  :tomato="tab.tomato"
+                          ></TomatoTimer>
+                      </v-col>
+                    </v-row>
+                  </v-tab-item>
+                </v-tabs-items>
+              </v-tabs>
+            </v-col>
+          </v-row>
+        </v-sheet>
       </v-container>
     </v-main>
 
     <v-footer
-            absolute
-            class="font-weight-medium"
+      app
+      absolute
+      class="font-weight-medium"
     >
-      <v-col
-              class="text-center"
-              cols="12"
-      >
-        {{ new Date().getFullYear() }} — <strong>Tomato Timer</strong>
-      </v-col>
+      <v-row>
+        <v-col
+          class="text-center"
+          cols="12"
+        >
+          {{ new Date().getFullYear() }} — <strong>Tomato Timer</strong>
+        </v-col>
+      </v-row>
     </v-footer>
-    </div>
 
     <new-tomato-dialog
             ref="dialog"
@@ -68,9 +90,9 @@
 </template>
 
 <script>
-
-import TomatoTimer from "./components/TomatoTimer";
 import NewTomatoDialog from "./components/NewTomatoDialog";
+import TomatoTimer from "./components/TomatoTimer";
+
 export default {
   name: 'App',
 
@@ -80,6 +102,13 @@ export default {
   },
 
   data: () => ({
+    currentTab: 'tomato',
+    tabs: [
+      { text: 'Tomato', value: 'tomato', tomato:{ min: 25 } },
+      { text: 'Short Break', value: 'short', tomato:{ min: 5 } },
+      { text: 'Long Break', value: 'long', tomato:{ min: 10 } },
+      { text: 'Custom', value: 'custom', tomato:{ min: 1 } }
+    ],
     panel: [],
     dialogOpen: false,
     tomatos: [

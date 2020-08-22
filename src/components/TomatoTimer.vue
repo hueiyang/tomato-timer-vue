@@ -1,17 +1,13 @@
 <template>
     <v-card>
         <v-card-title class="justify-center">{{ tabName }}</v-card-title>
-        <v-divider></v-divider>
         <v-card-text>
             <v-row>
                 <v-col class="display-3 d-flex justify-center" cols="12">
-                    {{ currentMin }}
-                    :
-                    {{ currentSec}}
+                    {{ displayClock }}
                 </v-col>
             </v-row>
         </v-card-text>
-        <v-divider></v-divider>
         <v-card-actions class="justify-center">
             <v-btn color="green" @click="startTimer">Start</v-btn>
             <v-btn color="red" @click="stopTimer">Stop</v-btn>
@@ -35,6 +31,13 @@ export default {
               if (!val) return
               this.assignTimer()
           }
+      }
+    },
+    computed: {
+      displayClock () {
+          const min = this.currentMin < 10 ? ('0' + this.currentMin) : this.currentMin
+          const sec = this.currentSec < 10 ? ('0' + this.currentSec) : this.currentSec
+          return min + ' : ' + sec
       }
     },
     data () {

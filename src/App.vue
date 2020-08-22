@@ -6,22 +6,8 @@
       dark
     >
       <v-row>
-        <v-col>
-
-        </v-col>
-        <v-col class="d-flex justify-center">
+        <v-col class="d-flex justify-center align-center">
           <v-toolbar-title>Tomato Timer</v-toolbar-title>
-        </v-col>
-        <v-col class="d-flex justify-end">
-          <v-btn
-            color="pink"
-            dark
-            fab
-            small
-            @click="openDialog"
-          >
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
         </v-col>
       </v-row>
     </v-app-bar>
@@ -100,7 +86,14 @@ export default {
     NewTomatoDialog,
     TomatoTimer
   },
-
+  watch: {
+    currentTab: function (val) {
+      console.log(val)
+      if (val === 3) {
+        this.openDialog()
+      }
+    }
+  },
   data: () => ({
     currentTab: 'tomato',
     tabs: [
@@ -110,10 +103,7 @@ export default {
       { text: 'Custom', value: 'custom', tomato:{ min: 1 } }
     ],
     panel: [],
-    dialogOpen: false,
-    tomatos: [
-      { title: '事情的主題', content: '這是你對這件事的描述', clock: 25, closed: false }
-    ]
+    dialogOpen: false
   }),
   methods: {
     openDialog () {
@@ -123,7 +113,7 @@ export default {
     },
     addNewTomato (tomato) {
       console.log('create new one = ', tomato)
-      this.tomatos.push(tomato)
+      this.tabs[3].tomato = tomato
     }
   }
 };
